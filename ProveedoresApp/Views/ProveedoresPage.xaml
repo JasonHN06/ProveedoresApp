@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="ProveedoresApp.Views.ProveedoresPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:ProveedoresApp.Models"
+             Title="Gestión de Proveedores"
+             x:DataType="vm:ProveedoresViewModel"
+             xmlns:vm="clr-namespace:ProveedoresApp.ViewModels">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+            <VerticalStackLayout Spacing="10">
+                <Label Text="Nombre:" FontAttributes="Bold" />
+                <Entry Text="{Binding NuevoProveedor.Nombre, Mode=TwoWay}" />
+                <Label Text="{Binding NombreError}" TextColor="Red" FontSize="Small" />
+
+                <Label Text="Dirección:" FontAttributes="Bold" />
+                <Entry Text="{Binding NuevoProveedor.Direccion, Mode=TwoWay}" />
+
+                <Label Text="Teléfono:" FontAttributes="Bold" />
+                <Entry Text="{Binding NuevoProveedor.Telefono, Mode=TwoWay}" />
+
+                <Label Text="Email:" FontAttributes="Bold" />
+                <Entry Text="{Binding NuevoProveedor.Email, Mode=TwoWay}" Keyboard="Email" />
+                <Label Text="{Binding EmailError}" TextColor="Red" FontSize="Small" />
+
+                <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+                    <Button Text="Agregar" Command="{Binding AgregarProveedorCommand}" BackgroundColor="Green" />
+                    <Button Text="Guardar Edición" Command="{Binding EditarProveedorCommand}" BackgroundColor="Blue" />
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+
+            <Label Text="Lista de Proveedores" FontSize="18" FontAttributes="Bold" HorizontalOptions="Center" />
+            <ListView ItemsSource="{Binding Proveedores}" SelectedItem="{Binding SelectedProveedor, Mode=OneWayToSource}">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Proveedor">
+                        <ViewCell>
+                            <Grid Padding="10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackLayout Grid.Column="0">
+                                    <Label Text="{Binding Nombre}" FontAttributes="Bold" />
+                                    <Label Text="{Binding Email}" FontSize="Small" />
+                                </StackLayout>
+                                <Button Grid.Column="1" Text="Eliminar" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ProveedoresViewModel}}, Path=EliminarProveedorCommand}" CommandParameter="{Binding .}" BackgroundColor="Red" />
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
