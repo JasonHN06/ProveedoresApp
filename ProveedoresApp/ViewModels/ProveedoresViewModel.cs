@@ -76,10 +76,12 @@ namespace ProveedoresApp.ViewModels
         [RelayCommand]
         private async Task EditarProveedor()
         {
-            if (selectedProveedor == null) return;
+            if (NuevoProveedor == null || NuevoProveedor.Id == 0) return; 
 
-            await _databaseService.SaveProveedorAsync(selectedProveedor);
-            selectedProveedor = null;
+            await _databaseService.SaveProveedorAsync(NuevoProveedor);
+
+            NuevoProveedor = new Proveedor();
+            SelectedProveedor = null; 
             await LoadProveedoresAsync();
         }
 
@@ -95,10 +97,9 @@ namespace ProveedoresApp.ViewModels
 
         partial void OnSelectedProveedorChanged(Proveedor value)
         {
-            // Actualiza el proveedor seleccionado para editar
             if (value != null)
             {
-                nuevoProveedor = new Proveedor
+                NuevoProveedor = new Proveedor
                 {
                     Id = value.Id,
                     Nombre = value.Nombre,
@@ -106,6 +107,10 @@ namespace ProveedoresApp.ViewModels
                     Telefono = value.Telefono,
                     Email = value.Email
                 };
+            }
+            else
+            {
+                NuevoProveedor = new Proveedor(); 
             }
         }
     }
