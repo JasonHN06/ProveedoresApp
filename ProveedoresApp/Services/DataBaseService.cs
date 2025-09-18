@@ -8,7 +8,7 @@ namespace ProveedoresApp.Services
         private SQLiteAsyncConnection _database;
         private readonly string _dbPath;
 
-        public DatabaseService()
+        public DataBaseService()
         {
             _dbPath = Path.Combine(FileSystem.AppDataDirectory, "proveedores.db3");
             _database = new SQLiteAsyncConnection(_dbPath);
