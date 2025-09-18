@@ -50,36 +50,47 @@ namespace ProveedoresApp.ViewModels
             }
         }
 
+        private bool ValidateProveedor()
+        {
+            bool isValid = true;
+
+            NombreError = string.Empty;
+            EmailError = string.Empty;
+
+            if (string.IsNullOrWhiteSpace(NuevoProveedor.Nombre))
+            {
+                NombreError = "El nombre es requerido";
+                isValid = false;
+            }
+
+            if (string.IsNullOrWhiteSpace(NuevoProveedor.Email) || !NuevoProveedor.Email.Contains("@"))
+            {
+                EmailError = "Email inválido";
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
         [RelayCommand]
         private async Task AgregarProveedor()
         {
-            // Validación simple
-            if (string.IsNullOrWhiteSpace(nuevoProveedor.Nombre))
-            {
-                nombreError = "El nombre es requerido";
-                return;
-            }
-            nombreError = string.Empty;
+            // Validación
+            if (!ValidateProveedor()) return;
 
-            if (string.IsNullOrWhiteSpace(nuevoProveedor.Email) || !nuevoProveedor.Email.Contains("@"))
-            {
-                emailError = "Email inválido";
-                return;
-            }
-            emailError = string.Empty;
-
-            await _databaseService.SaveProveedorAsync(nuevoProveedor);
-            nuevoProveedor = new Proveedor(); // Reset
+            await _databaseService.SaveProveedorAsync(NuevoProveedor);
+            NuevoProveedor = new Proveedor();
             await LoadProveedoresAsync();
         }
 
         [RelayCommand]
         private async Task EditarProveedor()
         {
-            if (NuevoProveedor == null || NuevoProveedor.Id == 0) return; 
+            if (NuevoProveedor == null || NuevoProveedor.Id == 0) return;
+
+            if (!ValidateProveedor()) return;
 
             await _databaseService.SaveProveedorAsync(NuevoProveedor);
-
             NuevoProveedor = new Proveedor();
             SelectedProveedor = null; 
             await LoadProveedoresAsync();
