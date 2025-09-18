@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
+using ProveedoresApp.ViewModels;
+using ProveedoresApp.Views;
 
 namespace ProveedoresApp
 {
@@ -18,6 +20,9 @@ namespace ProveedoresApp
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
+
+            builder.Services.AddSingleton<ProveedoresViewModel>();
+            builder.Services.AddSingleton<Views.ProveedoresPage>();
 
             return builder.Build();
         }
